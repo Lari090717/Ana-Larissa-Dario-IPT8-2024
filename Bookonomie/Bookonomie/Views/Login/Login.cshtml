@@ -1,0 +1,27 @@
+﻿@page
+@model Bookonomie.Views.Login.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="content" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div style="text-align: center;">
+        <h1>Login</h1>
+        <p>Don't have an Account yet? <a asp-page="Register">Sign Up</a></p> <!-- NavigateToRegister adjusted to ASP.NET syntax -->
+
+        <form method="post">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="Username" value="@Model.Username" required /> 
+            </div>
+            <br />
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="Password" value="@Model.Password" required /> 
+            <br />
+            <button type="submit">Login</button>
+            <br />
+            <p style="color: red;">@Model.ErrorMessage</p> 
+        </form>
+    </div>
+</div>
