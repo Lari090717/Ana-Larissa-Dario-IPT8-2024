@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Register";
+}
+
+<div class="content" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div style="text-align: center;">
+        <h1>Register</h1>
+        <p>
+            Already have an Account?
+            <a asp-controller="Login" asp-action="Login">Sign In</a>
+        </p>
+
+        <form method="post">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required />
+            </div>
+            <br />
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required />
+            </div>
+            <br />
+            <button type="submit">Register</button>
+            <br />
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <p style="color: red;">@ViewBag.ErrorMessage</p>
+            }
+        </form>
+    </div>
+</div>
