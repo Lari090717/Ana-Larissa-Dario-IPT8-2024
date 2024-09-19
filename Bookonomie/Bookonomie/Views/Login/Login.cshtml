@@ -2,30 +2,29 @@
     ViewBag.Title = "Login";
 }
 
-<div class="content" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <div style="text-align: center;">
-        <h1>Login</h1>
-        <p>
+<div class="container" style="height: 100vh; display: flex; justify-content: center; align-items: center;">
+    <div class="card" style="width: 400px; padding: 20px;">
+        <h2 class="text-center">Login</h2>
+        <p class="text-center">
             Don't have an account yet?
             <a asp-controller="Login" asp-action="Register">Sign Up</a>
         </p>
 
         <form method="post">
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required />
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required />
             </div>
-            <br />
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required />
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required />
             </div>
-            <br />
-            <button type="submit">Login</button>
-            <br />
+            </br>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+
             @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
             {
-                <p style="color: red;">@ViewBag.ErrorMessage</p>
+                <p class="text-danger mt-3">@ViewBag.ErrorMessage</p>
             }
         </form>
     </div>
