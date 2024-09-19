@@ -3,6 +3,32 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to Bookonomie!</h1>
+    <p>Manage your Books here!</p>
+
+    <style>
+        .search-bar input {
+            margin-right: 10px; 
+        }
+    </style>
+
+    <hr />
+
+    <div class="search-bar" style="margin-top: 20px;">
+        <form method="get" asp-controller="Home" asp-action="Search">
+            <div class="input-group mb-3" style="max-width: 600px; margin: 0 auto;">
+                <input type="text" name="query" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="search-button">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit" id="search-button">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <hr />
+
+    <!--<p>
+        <a class="btn btn-success btn-lg" href="/Login/Register" role="button">Register Now</a>
+        <a class="btn btn-secondary btn-lg" href="/Login/Login" role="button">Login</a>
+    </p> -->
 </div>
