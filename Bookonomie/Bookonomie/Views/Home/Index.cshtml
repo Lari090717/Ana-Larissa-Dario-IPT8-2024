@@ -2,8 +2,21 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div class="search-bar" style="margin-top: 20px;">
+    <form method="get" asp-controller="Home" asp-action="Search">
+        <div class="input-group mb-3" style="max-width: 600px; margin: 0 auto;">
+            <input type="text" name="query" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="search-button">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit" id="search-button">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<hr />
+
 <div class="text-center">
-    <h1 class="display-4">Welcome to Bookonomie!</h1>
+    <h1 class="display-6">Welcome to Bookonomie!</h1>
     <p>Manage your Books here!</p>
 
     <style>
@@ -11,19 +24,6 @@
             margin-right: 10px; 
         }
     </style>
-
-    <hr />
-
-    <div class="search-bar" style="margin-top: 20px;">
-        <form method="get" asp-controller="Home" asp-action="Search">
-            <div class="input-group mb-3" style="max-width: 600px; margin: 0 auto;">
-                <input type="text" name="query" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="search-button">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit" id="search-button">Search</button>
-                </div>
-            </div>
-        </form>
-    </div>
 
     <hr />
 
