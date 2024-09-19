@@ -8,3 +8,6 @@ Asp .NET, C#, HTML, CSS, JavaScript, SQL
 
 ## Wieso Originell?
 Das originelle von Bookonomy ist dass es eine Bücherliste ist, welche alle möglichen Genres enthält. 
+
+## 1. Meilenstein
+Unser erster Meilenstein ist, dass das Login funktioniert. Wir wollen die Ansicht, Funktionalität und die Datenbank erstellen.
