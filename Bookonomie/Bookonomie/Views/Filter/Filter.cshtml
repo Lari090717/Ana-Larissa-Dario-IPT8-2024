@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "Filter";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Filter</h1>
+
+    <!-- Filterformular -->
+    <form method="get" asp-controller="Filter" asp-action="Index">
+        <!-- Dropdown zum Auswählen zwischen Genre und Rating -->
+        <div class="form-group">
+            <label for="filterType">Select Filter Type:</label>
+            <select id="filterType" name="filterType" class="form-control" onchange="toggleFilterOptions()">
+                <option value="">-- Select Filter --</option>
+                <option value="genre">Genre</option>
+                <option value="rating">Rating</option>
+            </select>
+        </div>
+
+        <!-- Genre-Dropdown: Initial ausgeblendet -->
+        <div class="form-group" id="genreFilter" style="display: none;">
+            <label for="genre">Select Genre:</label>
+            <select id="genre" name="genre" class="form-control">
+                <option value="">-- Select Genre --</option>
+                @foreach (var genre in ViewBag.Genres)
+                {
+                    <option value="@genre">@genre</option>
+                }
+            </select>
+        </div>
+
+        <!-- Rating-Dropdown: Initial ausgeblendet -->
+        <div class="form-group" id="ratingFilter" style="display: none;">
+            <label for="rating">Select Rating:</label>
+            <select id="rating" name="rating" class="form-control">
+                <option value="">-- Select Rating --</option>
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Filter</button>
+    </form>
+
+    <hr />
+
+    <!-- Gefilterte Ergebnisse anzeigen -->
+    @if (ViewBag.FilteredBooks != null && ViewBag.FilteredBooks.Count > 0)
+    {
+        <h2>Filtered Results:</h2>
+        <ul class="list-group">
+            @foreach (var book in ViewBag.FilteredBooks)
+            {
+                <li class="list-group-item">
+                    <strong>@book.Title</strong> - Genre: @book.Genre, Rating: @book.Rating
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No books found based on the selected filter.</p>
+    }
+</div>
+
+<script>
+    function toggleFilterOptions() {
+        var filterType = document.getElementById('filterType').value;
+
+        // Zeige das Genre-Dropdown an, wenn "Genre" ausgewählt wurde
+        if (filterType === 'genre') {
+            document.getElementById('genreFilter').style.display = 'block';
+            document.getElementById('ratingFilter').style.display = 'none';
+        }
+        // Zeige das Rating-Dropdown an, wenn "Rating" ausgewählt wurde
+        else if (filterType === 'rating') {
+            document.getElementById('genreFilter').style.display = 'none';
+            document.getElementById('ratingFilter').style.display = 'block';
+        }
+        // Beide Dropdowns ausblenden, wenn nichts oder "Select Filter" ausgewählt ist
+        else {
+            document.getElementById('genreFilter').style.display = 'none';
+            document.getElementById('ratingFilter').style.display = 'none';
+        }
+    }
+</script>
