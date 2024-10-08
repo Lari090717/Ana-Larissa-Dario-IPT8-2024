@@ -20,7 +20,7 @@
                 <input type="password" id="password" name="password" class="form-control" required />
             </div>
             </br>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <button type="submit" class="submit-button">Login</button>
 
             @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
             {
@@ -29,3 +29,38 @@
         </form>
     </div>
 </div>
+<style>
+    .container {
+        background-color: #f5deb3;
+    }
+
+    .card {
+        background-color: #fdf5e6;
+    }
+
+    .text-center {
+        color: #4682b4;
+        font-family: serif;
+        font-size: x-large;
+    }
+
+    .form-group {
+        color: #4682b4;
+        font-family: serif;
+        font-size: large;
+    }
+
+    .submit-button {
+        background-color: #ffe4cd;
+        color: #4682b4;
+        font-family: serif;
+        border-radius: 10%;
+        border: solid #faf0e6;
+        font-size: large;
+        transition-duration: 0.4s;
+    }
+
+        .submit-button:hover {
+            color: #035096;
+        }
+</style>
