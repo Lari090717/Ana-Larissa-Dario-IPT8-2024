@@ -1,13 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
+<div class="background">
 <div class="search-bar" style="margin-top: 20px;">
     <form method="get" asp-controller="Home" asp-action="Search">
         <div class="input-group mb-3" style="max-width: 600px; margin: 0 auto;">
             <input type="text" name="query" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="search-button">
             <div class="input-group-append">
-                <button class="btn btn-primary" type="submit" id="search-button">Search</button>
+                <button class="search-button" type="submit" id="search-button">Search</button>
             </div>
         </div>
     </form>
@@ -17,7 +17,7 @@
 
 <div class="text-center">
     <h1 class="display-6">Welcome to Bookonomie!</h1>
-    <p>Manage your Books here!</p>
+    <p class="label"> Manage your Books here!</p>
 
     <style>
         .search-bar input {
@@ -28,3 +28,42 @@
     <hr />
 
 </div>
+</div>
+<style>
+  .search-bar
+  {
+        background-color: #fdf5e6;
+  }
+  .search-button{
+        background-color: #ffe4cd;
+        color: #4682b4;
+        font-family: serif;
+        border-radius: 10%;
+        border: solid #faf0e6;
+        font-size: large;
+        transition-duration: 0.4s;
+  }
+  .search-button:hover{
+            color: #035096;
+  }
+
+  .text-center{
+        background-color: #fdf5e6;
+  }
+  .display-6{
+        color: #4682b4;
+        font-family: serif;
+        font-size: xx-large;
+  }
+  .label{
+        color: #4682b4;
+        font-family: serif;
+        font-size: large;
+  }
+  .background{
+        background-color: #fdf5e6;
+  }
+  .form-control{
+        background-color: #fffaf0;
+    }
+</style>
