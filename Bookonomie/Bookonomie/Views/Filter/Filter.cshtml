@@ -2,6 +2,7 @@
     ViewData["Title"] = "Filter";
 }
 
+<div class="background">
 <div class="container mt-4">
     <h1 class="mb-4">Filter</h1>
 
@@ -9,7 +10,7 @@
     <form method="get" asp-controller="Filter" asp-action="Index">
         <!-- Dropdown zum Auswählen zwischen Genre und Rating -->
         <div class="form-group">
-            <label for="filterType">Select Filter Type:</label>
+            <label class="filter-type" for="filterType">Select Filter Type:</label>
             <select id="filterType" name="filterType" class="form-control" onchange="toggleFilterOptions()">
                 <option value="">-- Select Filter --</option>
                 <option value="genre">Genre</option>
@@ -19,7 +20,7 @@
 
         <!-- Genre-Dropdown: Initial ausgeblendet -->
         <div class="form-group" id="genreFilter" style="display: none;">
-            <label for="genre">Select Genre:</label>
+            <label class="genre" for="genre">Select Genre:</label>
             <select id="genre" name="genre" class="form-control">
                 <option value="">-- Select Genre --</option>
                 @foreach (var genre in ViewBag.Genres)
@@ -31,7 +32,7 @@
 
         <!-- Rating-Dropdown: Initial ausgeblendet -->
         <div class="form-group" id="ratingFilter" style="display: none;">
-            <label for="rating">Select Rating:</label>
+            <label class="rating" for="rating">Select Rating:</label>
             <select id="rating" name="rating" class="form-control">
                 <option value="">-- Select Rating --</option>
                 @for (int i = 1; i <= 5; i++)
@@ -41,7 +42,7 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Filter</button>
+        <button type="submit" class="submit-button">Filter</button>
     </form>
 
     <hr />
@@ -49,7 +50,7 @@
     <!-- Gefilterte Ergebnisse anzeigen -->
     @if (ViewBag.FilteredBooks != null && ViewBag.FilteredBooks.Count > 0)
     {
-        <h2>Filtered Results:</h2>
+        <h2 class="result">Filtered Results:</h2>
         <ul class="list-group">
             @foreach (var book in ViewBag.FilteredBooks)
             {
@@ -64,7 +65,7 @@
         <p>No books found based on the selected filter.</p>
     }
 </div>
-
+</div>
 <script>
     function toggleFilterOptions() {
         var filterType = document.getElementById('filterType').value;
@@ -86,3 +87,67 @@
         }
     }
 </script>
+<style>
+  .background{
+        background-color: #fdf5e6;
+  }
+  .mb-4{
+        color: #4682b4;
+        font-family: serif;
+        font-size: xx-large;
+  }
+
+  .form-group {
+        color: #4682b4;
+        font-family: serif;
+        font-size: large;
+  }
+  .filter-type{
+        color: #4682b4;
+        font-family: serif;
+        font-size: large;
+        background-color: #fffaf0;
+    }
+  .genre{
+        color: #4682b4;
+        font-family: serif;
+        font-size: large;
+        background-color: #fffaf0;
+    }
+    .rating{
+        color: #4682b4;
+        font-family: serif;
+        font-size: large;
+        background-color: #fffaf0;
+    }
+    .form-control{
+        background-color: #fffaf0;
+    }
+    .submit-button {
+        background-color: #ffe4cd;
+        color: #4682b4;
+        font-family: serif;
+        border-radius: 10%;
+        border: solid #faf0e6;
+        font-size: large;
+        transition-duration: 0.4s;
+    }
+
+    .submit-button:hover {
+            color: #035096;
+    }
+    .result{
+        color: #4682b4;
+        font-family: serif;
+        font-size: xx-large;
+    }
+    .list-group{
+        background-color: #fdf5e6;
+    }
+    .list-group-item{
+        color: #4682b4;
+        font-family: serif;
+        font-size: large;
+        background-color: #fffaf0; 
+    }
+</style>
