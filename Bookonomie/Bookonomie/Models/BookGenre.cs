@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
 namespace Bookonomie.Models
 {
-    public class User
+    public class BookGenre
     {
-        [Key]
-        public int UserId { get; set; }
-
         [ForeignKey("Book")]
         public int fk_BookId { get; set; }
         public Book Book { get; set; }
+
+        [ForeignKey("Genre")]
+        public int fk_GenreId { get; set; }
+        public Genre Genre { get; set; }
     }
 }
