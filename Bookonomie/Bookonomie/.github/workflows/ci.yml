@@ -1,0 +1,51 @@
+name: SonarCloud Analysis
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Setup .NET Core
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x.x'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: dotnet restore
+
+      # Step 4: Install CSharpier for formatting check
+      - name: Install CSharpier
+        run: dotnet tool install -g csharpier
+
+      # Step 5: Run CSharpier to check formatting
+      - name: Run CSharpier
+        run: |
+          csharpier .
+        continue-on-error: true  # Continue even if formatting issues are found
+
+      # Step 6: Check if any formatting changes were made
+      - name: Check for unformatted code
+        run: |
+          git diff --exit-code
+
+      # Step 7: Run SonarCloud Scan
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v1
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.organization="IPT8.1"
+            -Dsonar.projectKey="ipt8-1"
+            -Dsonar.host.url="https://sonarcloud.io"
+            -Dsonar.login="${{ secrets.CI_CD_Token }}"
