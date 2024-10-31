@@ -14,5 +14,6 @@ namespace Bookonomie.Data
             public DbSet<Book> Book { get; set; }
             public DbSet<Author> Author { get; set; }
             public DbSet<Genre> Genre { get; set; }
+            public DbSet<BookGenre> BookGenre { get; set; }
     }
 }
