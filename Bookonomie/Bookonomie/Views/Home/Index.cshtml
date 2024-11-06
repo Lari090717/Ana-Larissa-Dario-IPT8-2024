@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<Bookonomie.Models.Book>
+@{
     ViewData["Title"] = "Home Page";
 }
 <div class="background">
@@ -26,6 +27,13 @@
     </style>
 
     <hr />
+
+        <ul>
+            @foreach (var item in Model)
+            {
+                <li>@item.Title</li>
+            }
+        </ul>
 
 </div>
 </div>

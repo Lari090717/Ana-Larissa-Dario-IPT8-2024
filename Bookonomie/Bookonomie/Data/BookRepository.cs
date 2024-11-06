@@ -10,10 +10,6 @@ namespace Bookonomie.Data
     {
         private readonly ApplicationDbContext _context;
 
-        public Book GetBookById(int id)
-        {
-            return _context.Books.Include(b => b.Author).Include(b => b.Genres)
-            .FirstOrDefault(b => b.BookId == id);
-        }
+
     }
 }
