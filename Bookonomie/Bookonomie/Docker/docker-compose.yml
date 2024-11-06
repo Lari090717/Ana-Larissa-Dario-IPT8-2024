@@ -7,9 +7,9 @@ services:
     container_name: mysql-demo
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: demo
+      MYSQL_DATABASE: bookonomie
       MYSQL_USER: root
-      MYSQL_PASSWORD: demo
+      MYSQL_PASSWORD: root
     ports:
       - "3308:3306"
     volumes:
