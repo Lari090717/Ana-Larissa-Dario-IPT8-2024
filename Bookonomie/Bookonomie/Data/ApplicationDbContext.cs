@@ -10,9 +10,9 @@ namespace Bookonomie.Data
             }
 
             // Definiere deine DbSets (Tabellen) hier
-            public DbSet<User> Users { get; set; }
+            public DbSet<User> User { get; set; }
             public DbSet<Book> Book { get; set; }
-            public DbSet<Author> Authors { get; set; }
+            public DbSet<Author> Author { get; set; }
             public DbSet<Genre> Genres { get; set; }
             //public DbSet<BookGenre> BookGenres { get; set; }
 
