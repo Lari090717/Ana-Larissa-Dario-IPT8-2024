@@ -19,9 +19,9 @@ namespace Bookonomie.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var bookTitles = _context.Book.Select(book => book.Title).ToList();
+            var book = _context.Book.ToList();
 
-            return View(bookTitles);
+            return View(book);
         }
 
         //[HttpGet]
