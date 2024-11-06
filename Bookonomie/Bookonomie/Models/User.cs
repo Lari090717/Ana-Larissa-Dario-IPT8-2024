@@ -8,6 +8,9 @@ namespace Bookonomie.Models
         [Key]
         public int UserId { get; set; }
 
+        public string Username { get; set; }
+        public string Password { get; set; }
+
         [ForeignKey("Book")]
         public int fk_BookId { get; set; }
         public Book Book { get; set; }

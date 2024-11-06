@@ -2,16 +2,21 @@
 using Bookonomie.Views.Login;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using Bookonomie.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bookonomie.Controllers
 {
     public class LoginController: Controller
     {
         private readonly ILogger<LoginController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public LoginController(ILogger<LoginController> logger)
+        public LoginController(ILogger<LoginController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         [HttpGet]
@@ -29,14 +34,16 @@ namespace Bookonomie.Controllers
                 return View();
             }
 
-            // Simuliere Login-Überprüfung (kann später durch eine echte Datenbanküberprüfung ersetzt werden)
-            if (username == "admin" && password == "password")
+            // Query the database for the user
+            var user = _context.User.FirstOrDefault(u => u.Username == username && u.Password == password);
+
+            if (user != null)
             {
-                // Erfolgreicher Login
+                // Successful login
                 return RedirectToAction("Index", "Home");
             }
 
-            // Fehlgeschlagener Login
+            // Failed login
             ViewBag.ErrorMessage = "Invalid login attempt.";
             return View();
         }
@@ -48,7 +55,7 @@ namespace Bookonomie.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(string username, string password)
+        public async Task<IActionResult> Register(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
@@ -56,8 +63,26 @@ namespace Bookonomie.Controllers
                 return View();
             }
 
-            // Hier würdest du den Benutzer speichern und ggf. überprüfen, ob der Benutzername existiert.
-            // Simulierter erfolgreicher Registrierungsvorgang:
+            // Check if the username already exists
+            var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Username == username);
+            if (existingUser != null)
+            {
+                ViewBag.ErrorMessage = "Username already exists. Please choose a different username.";
+                return View();
+            }
+
+            // Create a new user
+            var user = new User
+            {
+                Username = username,
+                Password = password // In a real app, hash the password before saving
+            };
+
+            // Add the user to the database
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+
+            // Redirect to login after successful registration
             return RedirectToAction("Login", "Login");
         }
 
