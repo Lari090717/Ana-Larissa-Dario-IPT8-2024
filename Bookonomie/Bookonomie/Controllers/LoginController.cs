@@ -35,7 +35,7 @@ namespace Bookonomie.Controllers
             }
 
             // Query the database for the user
-            var user = _context.User.FirstOrDefault(u => u.Username == username && u.Password == password);
+            var user = _context.BookonomieUser.FirstOrDefault(u => u.Username == username && u.Userpassword == password);
 
             if (user != null)
             {
@@ -64,7 +64,7 @@ namespace Bookonomie.Controllers
             }
 
             // Check if the username already exists
-            var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Username == username);
+            var existingUser = await _context.BookonomieUser.FirstOrDefaultAsync(u => u.Username == username);
             if (existingUser != null)
             {
                 ViewBag.ErrorMessage = "Username already exists. Please choose a different username.";
@@ -74,12 +74,13 @@ namespace Bookonomie.Controllers
             // Create a new user
             var user = new User
             {
+                
                 Username = username,
-                Password = password // In a real app, hash the password before saving
+                Userpassword = password // In a real app, hash the password before saving
             };
 
             // Add the user to the database
-            _context.User.Add(user);
+            _context.BookonomieUser.Add(user);
             await _context.SaveChangesAsync();
 
             // Redirect to login after successful registration

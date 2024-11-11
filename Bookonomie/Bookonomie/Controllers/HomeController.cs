@@ -24,13 +24,6 @@ namespace Bookonomie.Controllers
             return View(book);
         }
 
-        //[HttpGet]
-        //public IActionResult SelectAllBooks()
-        //{
-
-        //    return View();
-        //}
-
         public IActionResult Privacy()
         {
             return View();
@@ -49,6 +42,12 @@ namespace Bookonomie.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Search()
+        {
+
+            return View();
         }
     }
 }

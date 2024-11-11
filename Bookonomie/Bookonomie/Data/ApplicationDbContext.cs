@@ -10,11 +10,10 @@ namespace Bookonomie.Data
             }
 
             // Definiere deine DbSets (Tabellen) hier
-            public DbSet<User> User { get; set; }
+            public DbSet<User> BookonomieUser { get; set; }
             public DbSet<Book> Book { get; set; }
             public DbSet<Author> Author { get; set; }
-            public DbSet<Genre> Genres { get; set; }
-            //public DbSet<BookGenre> BookGenres { get; set; }
+            public DbSet<Genre> Genre { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
