@@ -4,9 +4,9 @@
 }
 <div class="background">
     <div class="search-bar" style="margin-top: 20px;">
-        <form method="get" asp-controller="Home" asp-action="Search">
+        <form method="post" asp-controller="Home" asp-action="Index">
             <div class="input-group mb-3" style="max-width: 600px; margin: 0 auto;">
-                <input type="text" name="query" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="search-button">
+                <input type="text" id="searchInput" name="query" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="search-button">
                 <div class="input-group-append">
                     <button class="search-button" type="submit" id="search-button">Search</button>
                 </div>

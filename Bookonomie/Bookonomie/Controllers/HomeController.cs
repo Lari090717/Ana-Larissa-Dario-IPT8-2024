@@ -19,9 +19,20 @@ namespace Bookonomie.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var book = _context.Book.ToList();
+            var books = _context.Book.ToList();
+             return View(books);
+        }
 
-            return View(book);
+        [HttpPost]
+        public IActionResult Index(string searchInput)
+        {
+            var books = _context.Book.ToList();
+            searchInput = Request.Form["query"];
+            if (string.IsNullOrEmpty(searchInput))
+                return View(books);
+
+            books = _context.Book.Where(b => b.Title.Contains(searchInput)).ToList();
+            return View(books);
         }
 
         public IActionResult Privacy()
@@ -42,12 +53,6 @@ namespace Bookonomie.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public IActionResult Search()
-        {
-
-            return View();
         }
     }
 }
