@@ -19,20 +19,44 @@
     <div class="text-center">
         <h1 class="display-6">Welcome to Bookonomie!</h1>
         <p class="label"> Manage your Books here!</p>
-
         <hr />
-            <div class="d-flex flex-wrap justify-content-center">
-                @foreach (var item in Model)
-                {
-                    <div class="card" style="width: 20rem; margin: 10px">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Title</h5>
-                        </div>
+
+        <!-- Display Books as Clickable Cards -->
+        <div class="d-flex flex-wrap justify-content-center">
+            @foreach (var item in Model)
+            {
+                <div class="card book-card" style="width: 20rem; margin: 10px" onclick="fetchBookDetails(@item.BookId)">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
                     </div>
-                }
+                </div>
+            }
+        </div>
+    </div>
+
+
+</div>
+<div id="bookModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookTitle"></h5>
+                <button type="button" class="close" aria-label="Close" onclick="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <div class="modal-body">
+                <p><strong>Rating:</strong> <span id="bookRating"></span></p>
+                <p><strong>Description:</strong> <span id="bookDescription"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
     </div>
 </div>
+
+
 <style>
   .search-bar
   {
@@ -75,4 +99,35 @@
   .form-control{
         background-color: #fffaf0;
     }
+
+    .book-card {
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .book-card:hover {
+            transform: scale(1.02);
+            box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);
+        }
 </style>
+<script>
+    function fetchBookDetails(bookId) {
+        fetch(`/Home/GetBookDetails?id=${bookId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('bookTitle').textContent = data.title;
+                document.getElementById('bookRating').textContent = data.rating;
+                document.getElementById('bookDescription').textContent = data.description;
+                openModal();
+            })
+            .catch(error => console.error('Error fetching book details:', error));
+    }
+
+    function openModal() {
+        document.getElementById('bookModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+    }
+</script>

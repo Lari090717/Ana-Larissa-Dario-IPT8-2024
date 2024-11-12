@@ -54,5 +54,24 @@ namespace Bookonomie.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public IActionResult GetBookDetails(int id)
+        {
+            var book = _context.Book
+                .Where(b => b.BookId == id)
+                .Select(b => new {
+                    title = b.Title,
+                    rating = b.Rating,
+                    author = b.Author,
+                    description = b.Description
+                })
+                .FirstOrDefault();
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return Json(book);
+        }
     }
 }
