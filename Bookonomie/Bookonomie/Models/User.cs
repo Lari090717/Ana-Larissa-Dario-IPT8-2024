@@ -11,8 +11,7 @@ namespace Bookonomie.Models
         public string Username { get; set; }
         public string Userpassword { get; set; }
 
-        [ForeignKey("Book")]
-        public int? fk_BookId { get; set; }
-        public Book Book { get; set; }
+        // Navigation property for BookGenre many-to-many relationship
+        public ICollection<Book> Books { get; set; }
     }
 }

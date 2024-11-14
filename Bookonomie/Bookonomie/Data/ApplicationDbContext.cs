@@ -20,7 +20,12 @@ namespace Bookonomie.Data
             modelBuilder.Entity<Book>()
                 .HasMany(b => b.Genres)
                 .WithMany(g => g.Books)
-                .UsingEntity(j => j.ToTable("BookGenre")); // Optional: Specify the table name
+                .UsingEntity(j => j.ToTable("BookGenre"));
+
+            modelBuilder.Entity<Book>()
+                .HasMany(b => b.Users)
+                .WithMany(g => g.Books)
+                .UsingEntity(j => j.ToTable("BookUser"));
         }
 
     }
