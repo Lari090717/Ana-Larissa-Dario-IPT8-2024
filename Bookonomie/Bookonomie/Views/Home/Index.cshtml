@@ -50,6 +50,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addToBookList()">Add to List</button>
             </div>
         </div>
     </div>
@@ -128,5 +129,23 @@
 
     function closeModal() {
         document.getElementById('bookModal').style.display = 'none';
+    }
+    function addToBookList() {
+        console.log("Attempting to add book to list...");
+        const bookList = JSON.parse(localStorage.getItem('bookList')) || [];
+        console.log("Current bookList in localStorage:", bookList);
+
+        // Check if the current book is already in the list
+        if (!bookList.some(book => book.bookId === currentBookDetails.bookId)) {
+            bookList.push(currentBookDetails);
+            localStorage.setItem('bookList', JSON.stringify(bookList));
+            console.log("Book added successfully! Updated bookList:", bookList);
+            alert('Book added to list successfully!');
+        } else {
+            console.log("Book already exists in the list.");
+            alert('Book is already in the list.');
+        }
+
+        closeModal();
     }
 </script>
