@@ -1,0 +1,121 @@
+﻿@model List<Bookonomie.Models.Book>
+@{
+    ViewData["Title"] = "My Book List";
+}
+<div class="background">
+    <div class="text-center">
+        <h1 class="display-6">My Book List</h1>
+        <p class="label">Here are the books you've added to your list!</p>
+        <hr />
+
+        <!-- Container for dynamically generated book cards -->
+        <div id="bookListContainer" class="d-flex flex-wrap justify-content-center">
+            <!-- Book cards will be appended here by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Book Details -->
+<div id="bookModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookTitle"></h5>
+                <button type="button" class="close" aria-label="Close" onclick="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Rating:</strong> <span id="bookRating"></span></p>
+                <p><strong>Description:</strong> <span id="bookDescription"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .background {
+        background-color: #fdf5e6;
+    }
+
+    .text-center {
+        background-color: #fdf5e6;
+    }
+
+    .display-6 {
+        color: #4682b4;
+        font-family: serif;
+        font-size: xx-large;
+    }
+
+    .label {
+        color: #4682b4;
+        font-family: serif;
+        font-size: large;
+    }
+
+    .book-card {
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .book-card:hover {
+            transform: scale(1.02);
+            box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);
+        }
+</style>
+
+<script>
+    function fetchBookDetails(bookId) {
+        fetch(`/Home/GetBookDetails?id=${bookId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('bookTitle').textContent = data.title;
+                document.getElementById('bookRating').textContent = data.rating;
+                document.getElementById('bookDescription').textContent = data.description;
+                openModal();
+            })
+            .catch(error => console.error('Error fetching book details:', error));
+    }
+
+    function openModal() {
+        document.getElementById('bookModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("Loading book list...");
+        const bookListContainer = document.getElementById('bookListContainer');
+        const bookList = JSON.parse(localStorage.getItem('bookList')) || [];
+        console.log("Loaded book list from localStorage on Booklist page:", bookList);
+
+        if (bookList.length === 0) {
+            bookListContainer.innerHTML = '<p>No books have been added to your list.</p>';
+            return;
+        }
+
+        bookList.forEach(book => {
+            const card = document.createElement('div');
+            card.className = 'card book-card';
+            card.style.width = '20rem';
+            card.style.margin = '10px';
+
+            card.innerHTML = `
+                <div class="card-body">
+                    <h5 class="card-title">${book.title}</h5>
+                    <p><strong>Rating:</strong> ${book.rating}</p>
+                    <p><strong>Description:</strong> ${book.description}</p>
+                </div>
+            `;
+
+            bookListContainer.appendChild(card);
+        });
+    });
+</script>
