@@ -21,7 +21,8 @@ namespace Bookonomie.Models
         public int fk_AuthorId { get; set; }
         public Author Author { get; set; }
 
-        // Navigation property for BookGenre many-to-many relationship
+        // Navigation property for BookGenre and BookUser many-to-many relationship
         public ICollection<Genre> Genres { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }
