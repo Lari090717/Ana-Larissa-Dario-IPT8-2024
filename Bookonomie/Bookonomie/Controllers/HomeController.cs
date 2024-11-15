@@ -53,8 +53,8 @@ namespace Bookonomie.Controllers
 
          public async Task<IActionResult> AddBookToList(int bookId, int userId)
         {
-            // Check if the book is already in list
-            userId = 1;
+            userId = 1; //If login works remove this line!
+            //Check if the book is already in list
             var bookList = await _context.BookUser.FirstOrDefaultAsync(bu => bu.fk_BookId == bookId && bu.fk_UserId == userId);
             if (bookList == null)
             {
@@ -65,6 +65,11 @@ namespace Bookonomie.Controllers
                 };
                 _context.BookUser.Add(addNewBookUser);
                 await _context.SaveChangesAsync();
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Book is already in list";
+                return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
         }

@@ -38,6 +38,7 @@
 <div id="bookModal" class="modal" tabindex="-1" role="dialog">
     <form method="post" asp-controller="Home" asp-action="AddBookToList">
         <input type="hidden" id="bookIdInput" name="BookId" />
+        <input type="hidden" id="userIdInput" name="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

@@ -39,7 +39,17 @@ namespace Bookonomie.Controllers
         }
         public IActionResult Booklist()
         {
-            return View();
+            List<Book> books = new List<Book>();
+
+            int userId = 1; //If login works remove this line!
+            var bookUser = _context.BookUser.Where(u => u.fk_UserId == userId).ToList(); //Get personal list of user
+            foreach(var book in bookUser)
+            {
+                var bookFromList = _context.Book.FirstOrDefault(b => b.BookId == book.fk_BookId); //Get each book from the BookUser list with the foreign key
+                if (bookFromList != null)
+                    books.Add(bookFromList); //Put every book of personal list in a book-list instead of BookUser
+            }
+            return View(books);
         }
     }
 }

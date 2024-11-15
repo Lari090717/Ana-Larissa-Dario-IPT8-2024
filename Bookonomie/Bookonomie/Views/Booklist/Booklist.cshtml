@@ -8,9 +8,15 @@
         <p class="label">Here are the books you've added to your list!</p>
         <hr />
 
-        <!-- Container for dynamically generated book cards -->
-        <div id="bookListContainer" class="d-flex flex-wrap justify-content-center">
-            <!-- Book cards will be appended here by JavaScript -->
+        <div class="d-flex flex-wrap justify-content-center">
+            @foreach (var item in Model)
+            {
+                <div class="card book-card" style="width: 20rem; margin: 10px" onclick="fetchBookDetails(@item.BookId)">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
