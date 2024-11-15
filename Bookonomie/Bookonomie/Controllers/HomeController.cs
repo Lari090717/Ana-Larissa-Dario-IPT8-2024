@@ -51,17 +51,17 @@ namespace Bookonomie.Controllers
         }
 
 
-         public async Task<IActionResult> AddBookToList(Book bookItem, int userId)
+         public async Task<IActionResult> AddBookToList(int bookId, int userId)
         {
             // Check if the book is already in list
-
-            var bookList = await _context.BookUser.FirstOrDefaultAsync(bu => bu.BookId == bookItem.BookId && bu.UserId == userId);
+            userId = 1;
+            var bookList = await _context.BookUser.FirstOrDefaultAsync(bu => bu.fk_BookId == bookId && bu.fk_UserId == userId);
             if (bookList == null)
             {
                 var addNewBookUser = new BookUser
                 {
-                    BookId = bookItem.BookId,
-                    UserId = userId,
+                    fk_BookId = bookId,
+                    fk_UserId = userId,
                 };
                 _context.BookUser.Add(addNewBookUser);
                 await _context.SaveChangesAsync();
@@ -74,14 +74,15 @@ namespace Bookonomie.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
         public IActionResult GetBookDetails(int id)
         {
             var book = _context.Book
                 .Where(b => b.BookId == id)
-                .Select(b => new {
+                .Select(b => new
+                {
                     title = b.Title,
                     rating = b.Rating,
-                    author = b.Author,
                     description = b.Description
                 })
                 .FirstOrDefault();
@@ -93,7 +94,6 @@ namespace Bookonomie.Controllers
 
             return Json(book);
         }
-
 
     }
 }

@@ -24,17 +24,17 @@ namespace Bookonomie.Data
                 .UsingEntity(j => j.ToTable("BookGenre"));
 
             modelBuilder.Entity<BookUser>()
-                .HasKey(bu => new { bu.BookId, bu.UserId });
+                .HasKey(bu => new { bu.fk_BookId, bu.fk_UserId });
 
             modelBuilder.Entity<BookUser>()
                 .HasOne(bu => bu.Book)
                 .WithMany(b => b.BookUser)
-                .HasForeignKey(bu => bu.BookId);
+                .HasForeignKey(bu => bu.fk_BookId);
 
             modelBuilder.Entity<BookUser>()
                 .HasOne(bu => bu.User)
                 .WithMany(u => u.BookUser)
-                .HasForeignKey(bu => bu.UserId);
+                .HasForeignKey(bu => bu.fk_UserId);
         }
 
     }

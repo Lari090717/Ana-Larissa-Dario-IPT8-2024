@@ -37,10 +37,11 @@
 </div>
 <div id="bookModal" class="modal" tabindex="-1" role="dialog">
     <form method="post" asp-controller="Home" asp-action="AddBookToList">
+        <input type="hidden" id="bookIdInput" name="BookId" />
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="bookTitle" name="bookTitle"></h5>
+                    <h5 class="modal-title" id="bookTitle"></h5>
                     <button type="button" class="close" aria-label="Close" onclick="closeModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -50,13 +51,14 @@
                     <p><strong>Description:</strong> <span id="bookDescription"></span></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
                     <button type="submit" class="btn btn-primary">Add to List</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
                 </div>
             </div>
         </div>
     </form>
 </div>
+
 
 
 <style>
@@ -125,6 +127,36 @@
             .catch(error => console.error('Error fetching book details:', error));
     }
 
+    function fetchBookDetails(bookId) {
+        fetch(`/Home/GetBookDetails?id=${bookId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch book details.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('bookTitle').textContent = data.title;
+                document.getElementById('bookRating').textContent = data.rating;
+                document.getElementById('bookDescription').textContent = data.description;
+
+                // Set hidden input field for form submission in case of AddBookToList
+                document.getElementById('bookIdInput').value = bookId;
+
+                // Show the modal
+                document.getElementById('bookModal').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error fetching book details:', error);
+                alert('Could not retrieve book details.');
+            });
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+    }
+
+
     function openModal() {
         document.getElementById('bookModal').style.display = 'block';
     }
@@ -132,22 +164,4 @@
     function closeModal() {
         document.getElementById('bookModal').style.display = 'none';
     }
-    // function addToBookList() {
-    //     console.log("Attempting to add book to list...");
-    //     const bookList = JSON.parse(localStorage.getItem('bookList')) || [];
-    //     console.log("Current bookList in localStorage:", bookList);
-
-    //     // Check if the current book is already in the list
-    //     if (!bookList.some(book => book.bookId === currentBookDetails.bookId)) {
-    //         bookList.push(currentBookDetails);
-    //         localStorage.setItem('bookList', JSON.stringify(bookList));
-    //         console.log("Book added successfully! Updated bookList:", bookList);
-    //         alert('Book added to list successfully!');
-    //     } else {
-    //         console.log("Book already exists in the list.");
-    //         alert('Book is already in the list.');
-    //     }
-
-    //     closeModal();
-    // }
 </script>
