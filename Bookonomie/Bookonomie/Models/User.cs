@@ -12,6 +12,6 @@ namespace Bookonomie.Models
         public string Userpassword { get; set; }
 
         // Navigation property for BookGenre many-to-many relationship
-        public ICollection<Book> Books { get; set; }
+        public ICollection<BookUser> BookUser { get; set; }
     }
 }

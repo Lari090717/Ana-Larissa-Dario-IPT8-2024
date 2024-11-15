@@ -1,6 +1,7 @@
 using Bookonomie.Data;
 using Bookonomie.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace Bookonomie.Controllers
@@ -27,11 +28,11 @@ namespace Bookonomie.Controllers
         public IActionResult Index(string searchInput)
         {
             var books = _context.Book.ToList();
-            searchInput = Request.Form["query"];
-            if (string.IsNullOrEmpty(searchInput))
+            searchInput = Request.Form["query"]; //Gets value from the input field
+            if (string.IsNullOrEmpty(searchInput)) //If input empty -> return all books
                 return View(books);
 
-            books = _context.Book.Where(b => b.Title.Contains(searchInput)).ToList();
+            books = _context.Book.Where(b => b.Title.Contains(searchInput)).ToList(); //search books and make them into a list so you can find multiple books
             return View(books);
         }
 
@@ -48,9 +49,24 @@ namespace Bookonomie.Controllers
         {
             return View();
         }
-         public IActionResult addToBookList()
+
+
+         public async Task<IActionResult> AddBookToList(Book bookItem, int userId)
         {
-            return View();
+            // Check if the book is already in list
+
+            var bookList = await _context.BookUser.FirstOrDefaultAsync(bu => bu.BookId == bookItem.BookId && bu.UserId == userId);
+            if (bookList == null)
+            {
+                var addNewBookUser = new BookUser
+                {
+                    BookId = bookItem.BookId,
+                    UserId = userId,
+                };
+                _context.BookUser.Add(addNewBookUser);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

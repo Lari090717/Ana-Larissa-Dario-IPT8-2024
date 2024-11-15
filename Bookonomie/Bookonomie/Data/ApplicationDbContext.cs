@@ -14,6 +14,7 @@ namespace Bookonomie.Data
             public DbSet<Book> Book { get; set; }
             public DbSet<Author> Author { get; set; }
             public DbSet<Genre> Genre { get; set; }
+            public DbSet<BookUser> BookUser { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,10 +23,18 @@ namespace Bookonomie.Data
                 .WithMany(g => g.Books)
                 .UsingEntity(j => j.ToTable("BookGenre"));
 
-            modelBuilder.Entity<Book>()
-                .HasMany(b => b.Users)
-                .WithMany(g => g.Books)
-                .UsingEntity(j => j.ToTable("BookUser"));
+            modelBuilder.Entity<BookUser>()
+                .HasKey(bu => new { bu.BookId, bu.UserId });
+
+            modelBuilder.Entity<BookUser>()
+                .HasOne(bu => bu.Book)
+                .WithMany(b => b.BookUser)
+                .HasForeignKey(bu => bu.BookId);
+
+            modelBuilder.Entity<BookUser>()
+                .HasOne(bu => bu.User)
+                .WithMany(u => u.BookUser)
+                .HasForeignKey(bu => bu.UserId);
         }
 
     }

@@ -36,24 +36,26 @@
 
 </div>
 <div id="bookModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="bookTitle"></h5>
-                <button type="button" class="close" aria-label="Close" onclick="closeModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Rating:</strong> <span id="bookRating"></span></p>
-                <p><strong>Description:</strong> <span id="bookDescription"></span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addToBookList()">Add to List</button>
+    <form method="post" asp-controller="Home" asp-action="AddBookToList">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookTitle" name="bookTitle"></h5>
+                    <button type="button" class="close" aria-label="Close" onclick="closeModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Rating:</strong> <span id="bookRating"></span></p>
+                    <p><strong>Description:</strong> <span id="bookDescription"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+                    <button type="submit" class="btn btn-primary">Add to List</button>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 
@@ -130,22 +132,22 @@
     function closeModal() {
         document.getElementById('bookModal').style.display = 'none';
     }
-    function addToBookList() {
-        console.log("Attempting to add book to list...");
-        const bookList = JSON.parse(localStorage.getItem('bookList')) || [];
-        console.log("Current bookList in localStorage:", bookList);
+    // function addToBookList() {
+    //     console.log("Attempting to add book to list...");
+    //     const bookList = JSON.parse(localStorage.getItem('bookList')) || [];
+    //     console.log("Current bookList in localStorage:", bookList);
 
-        // Check if the current book is already in the list
-        if (!bookList.some(book => book.bookId === currentBookDetails.bookId)) {
-            bookList.push(currentBookDetails);
-            localStorage.setItem('bookList', JSON.stringify(bookList));
-            console.log("Book added successfully! Updated bookList:", bookList);
-            alert('Book added to list successfully!');
-        } else {
-            console.log("Book already exists in the list.");
-            alert('Book is already in the list.');
-        }
+    //     // Check if the current book is already in the list
+    //     if (!bookList.some(book => book.bookId === currentBookDetails.bookId)) {
+    //         bookList.push(currentBookDetails);
+    //         localStorage.setItem('bookList', JSON.stringify(bookList));
+    //         console.log("Book added successfully! Updated bookList:", bookList);
+    //         alert('Book added to list successfully!');
+    //     } else {
+    //         console.log("Book already exists in the list.");
+    //         alert('Book is already in the list.');
+    //     }
 
-        closeModal();
-    }
+    //     closeModal();
+    // }
 </script>
