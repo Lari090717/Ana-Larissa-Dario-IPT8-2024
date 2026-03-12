@@ -1,4 +1,4 @@
-﻿@model List<Bookonomie.Models.Book>
+﻿@model List<Bookonomie.Models.BookModel>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -24,7 +24,7 @@
         <div class="d-flex flex-wrap justify-content-center">
             @foreach (var item in Model)
             {
-                <div class="card book-card" style="width: 20rem; margin: 10px" onclick="fetchBookDetails(@item.BookId)">
+                <div class="card book-card" style="width: 20rem; margin: 10px" onclick="fetchBookDetails(@item.Id)">
                     <div class="card-body">
                         <h5 class="card-title">@item.Title</h5>
                     </div>

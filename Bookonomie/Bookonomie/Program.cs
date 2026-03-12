@@ -1,5 +1,4 @@
 using Bookonomie.Data;
-using MySql.Data.MySqlClient;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -8,10 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure MySQL database connection
-var connectionString = builder.Configuration.GetConnectionString("BookonomieConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySQL(connectionString));
+builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookonomieContext") ?? throw new InvalidOperationException("Connectionstirng not found.")));
 
 
 var app = builder.Build();
