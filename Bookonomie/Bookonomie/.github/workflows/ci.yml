@@ -1,26 +1,26 @@
 trigger:
 - main
 
+pr:
+- main
+
 pool:
   vmImage: 'windows-latest'
-  demands:
-  - visualstudio
-  - msbuild
 
 steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '10.0.200'
+    version: '8.0'
 
 - task: DotNetCoreCLI@2
   inputs:
-    commands: 'restore'
+    command: 'restore'
     projects: 'Bookonomie/Bookonomie.sln'
     feedsToUse: 'select'
 
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
-    commands: 'build'
+    command: 'build'
     projects: 'Bookonomie/Bookonomie.sln'

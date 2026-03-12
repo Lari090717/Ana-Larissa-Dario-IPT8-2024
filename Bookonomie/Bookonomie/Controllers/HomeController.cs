@@ -1,4 +1,5 @@
 using Bookonomie.Data;
+using Bookonomie.Entities;
 using Bookonomie.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,19 +21,19 @@ namespace Bookonomie.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var books = _context.Book.ToList();
-             return View(books);
+            var books = _context.Books.ToList();
+            return View(books);
         }
 
         [HttpPost]
         public IActionResult Index(string searchInput)
         {
-            var books = _context.Book.ToList();
+            var books = _context.Books.ToList();
             searchInput = Request.Form["query"]; //Gets value from the input field
             if (string.IsNullOrEmpty(searchInput)) //If input empty -> return all books
                 return View(books);
 
-            books = _context.Book.Where(b => b.Title.Contains(searchInput)).ToList(); //search books and make them into a list so you can find multiple books
+            books = _context.Books.Where(b => b.Title.Contains(searchInput)).ToList(); //search books and make them into a list so you can find multiple books
             return View(books);
         }
 
@@ -51,19 +52,20 @@ namespace Bookonomie.Controllers
         }
 
 
-         public async Task<IActionResult> AddBookToList(int bookId, int userId)
+        public async Task<IActionResult> AddBookToList(int bookId, int userId)
         {
             userId = 1; //If login works remove this line!
             //Check if the book is already in list
-            var bookList = await _context.BookUser.FirstOrDefaultAsync(bu => bu.fk_BookId == bookId && bu.fk_UserId == userId);
+            var bookList = await _context.BookUsers.FirstOrDefaultAsync(bu => bu.BookId == bookId && bu.UserId == userId);
             if (bookList == null)
             {
+                //ToDo: Refactor ALL logic into services to split everything into proper layers
                 var addNewBookUser = new BookUser
                 {
-                    fk_BookId = bookId,
-                    fk_UserId = userId,
+                    BookId = bookId,
+                    UserId = userId,
                 };
-                _context.BookUser.Add(addNewBookUser);
+                _context.BookUsers.Add(addNewBookUser);
                 await _context.SaveChangesAsync();
             }
             else
@@ -82,8 +84,8 @@ namespace Bookonomie.Controllers
 
         public IActionResult GetBookDetails(int id)
         {
-            var book = _context.Book
-                .Where(b => b.BookId == id)
+            var book = _context.Books
+                .Where(b => b.Id == id)
                 .Select(b => new
                 {
                     title = b.Title,

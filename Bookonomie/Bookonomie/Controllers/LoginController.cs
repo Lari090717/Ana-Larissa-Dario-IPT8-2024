@@ -1,14 +1,13 @@
-﻿using Bookonomie.Models;
-using Bookonomie.Views.Login;
+﻿using Bookonomie.Data;
+using Bookonomie.Entities;
+using Bookonomie.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using Microsoft.Extensions.Logging;
-using Bookonomie.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace Bookonomie.Controllers
 {
-    public class LoginController: Controller
+    public class LoginController : Controller
     {
         private readonly ILogger<LoginController> _logger;
         private readonly ApplicationDbContext _context;
@@ -35,7 +34,7 @@ namespace Bookonomie.Controllers
             }
 
             // Query the database for the user
-            var user = _context.BookonomieUser.FirstOrDefault(u => u.Username == username && u.Userpassword == password);
+            var user = _context.Users.FirstOrDefault(u => u.Username == username && u.Userpassword == password);
 
             if (user != null)
             {
@@ -64,7 +63,7 @@ namespace Bookonomie.Controllers
             }
 
             // Check if the username already exists
-            var existingUser = await _context.BookonomieUser.FirstOrDefaultAsync(u => u.Username == username);
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
             if (existingUser != null)
             {
                 ViewBag.ErrorMessage = "Username already exists. Please choose a different username.";
@@ -74,13 +73,13 @@ namespace Bookonomie.Controllers
             // Create a new user
             var user = new User
             {
-                
+
                 Username = username,
                 Userpassword = password // In a real app, hash the password before saving
             };
 
             // Add the user to the database
-            _context.BookonomieUser.Add(user);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             // Redirect to login after successful registration
