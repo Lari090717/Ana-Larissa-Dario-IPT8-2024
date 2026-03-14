@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bookonomie.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(BookonomieContext))]
     [Migration("20260312230700_InitialCreate")]
     partial class InitialCreate
     {

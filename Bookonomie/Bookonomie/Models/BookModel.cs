@@ -11,8 +11,4 @@ public class BookModel
     public double? Rating { get; set; }
 
     public int ReleaseYear { get; set; }
-
-    public int AuthorId { get; set; }
-
-    public AuthorModel Author { get; set; }
 }

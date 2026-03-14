@@ -1,65 +1,29 @@
 ﻿using Bookonomie.Data;
-using Bookonomie.Models;
+using Bookonomie.Services.ModelPreparation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace Bookonomie.Controllers
+namespace Bookonomie.Controllers;
+
+[Route("[controller]")]
+public class BooklistController(IDbContextFactory<BookonomieContext> dbContextFactory, IBookModelPreparation bookModelPreparation) : Controller
 {
-    public class BooklistController : Controller
+    [HttpGet("bookId")]
+    public async Task<IActionResult> GetBookDetails(int id)
     {
-        private readonly ILogger<BooklistController> _logger;
-        private readonly ApplicationDbContext _context;
+        await using var dbContext = await dbContextFactory.CreateDbContextAsync();
 
+        var book = await bookModelPreparation.PrepareBookModelAsync(dbContext, id);
 
-        public BooklistController(ILogger<BooklistController> logger, ApplicationDbContext context)
-        {
-            _logger = logger;
-            _context = context;
+        return Json(book);
+    }
+    public async Task<IActionResult> Booklist()
+    {
+        await using var dbContext = await dbContextFactory.CreateDbContextAsync();
 
-        }
-        public IActionResult GetBookDetails(int id)
-        {
-            var book = _context.Books
-                .Where(b => b.Id == id)
-                .Select(b => new
-                {
-                    title = b.Title,
-                    rating = b.Rating,
-                    author = b.Author,
-                    description = b.Description
-                })
-                .FirstOrDefault();
+        var userId = "1"; //If login works remove this line!
+        var books = await bookModelPreparation.PrepareUserBookModelListAsync(dbContext, userId);
 
-            if (book == null)
-            {
-                return NotFound();
-            }
-
-            return Json(book);
-        }
-        public IActionResult Booklist()
-        {
-            List<BookModel> books = new List<BookModel>();
-
-            int userId = 1; //If login works remove this line!
-            var userBooks = _context.BookUsers.Where(u => u.UserId == userId).ToList(); //Get personal list of user
-            foreach (var book in userBooks)
-            {
-                var bookFromList = _context.Books.FirstOrDefault(b => b.Id == book.BookId); //Get each book from the BookUser list with the foreign key
-                var bookModel = new BookModel();
-                if (bookFromList != null)
-                {
-                    bookModel = new BookModel
-                    {
-                        Id = bookFromList.Id,
-                        Title = bookFromList.Title,
-                        Description = bookFromList.Description,
-                        Rating = bookFromList.Rating,
-                        ReleaseYear = bookFromList.ReleaseYear,
-                    };
-                }
-                books.Add(bookModel); //Put every book of personal list in a book-list instead of BookUser
-            }
-            return View(books);
-        }
+        return View(books);
     }
 }

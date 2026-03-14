@@ -1,5 +1,8 @@
 using Bookonomie.Data;
+using Bookonomie.Entities;
+using Bookonomie.Services.ModelPreparation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,9 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
+builder.Services.AddDbContextFactory<BookonomieContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookonomieContext") ?? throw new InvalidOperationException("Connectionstirng not found.")));
 
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedEmail = false).AddEntityFrameworkStores<BookonomieContext>();
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IBookModelPreparation, BookModelPreparation>();
 
 var app = builder.Build();
 
