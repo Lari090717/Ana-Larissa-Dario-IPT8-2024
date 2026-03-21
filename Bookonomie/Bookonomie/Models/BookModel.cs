@@ -11,4 +11,6 @@ public class BookModel
     public double? Rating { get; set; }
 
     public int ReleaseYear { get; set; }
+
+    public bool IsPartOfBooklist { get; set; }
 }

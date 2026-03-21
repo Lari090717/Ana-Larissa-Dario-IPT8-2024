@@ -2,19 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using Bookonomie.Configs;
+using Bookonomie.Data;
 using Bookonomie.Entities;
+using Bookonomie.Services.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Bookonomie.Areas.Identity.Pages.Account
 {
@@ -22,11 +21,19 @@ namespace Bookonomie.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly JwtSettings _jwtSettings;
+        private readonly IDbContextFactory<BookonomieContext> _dbContextFactory;
 
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(
+            SignInManager<User> signInManager,
+            ILogger<LoginModel> logger,
+            ICommonConfigurationProvider configurationProvider,
+            IDbContextFactory<BookonomieContext> dbContextFactory)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _jwtSettings = configurationProvider.GetSettings<JwtSettings>();
+            _dbContextFactory = dbContextFactory;
         }
 
         /// <summary>
@@ -115,6 +122,17 @@ namespace Bookonomie.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
+
+
+                    var claims = new[]
+                    {
+                        new Claim(JwtRegisteredClaimNames.Sub, _jwtSettings.Subject),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim("UserId", await dbContext.Users.Where(x => x.Email == Input.Email).Select(x => x.Id).SingleAsync()),
+                        new Claim("Email", Input.Email),
+                    }
+                ;
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
